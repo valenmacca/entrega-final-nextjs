@@ -1,8 +1,11 @@
 "use client"
 import Swal from 'sweetalert2';
+import { CarritoContext } from "../../context/carritocontexto";
+import { useContext } from 'react';
 
 export default function ButtonComprar({ produtoid }) {
-
+    const { cantidad, setCantidad } = useContext(CarritoContext);
+    
     const guardarproducto = () => {
         const productoExistente = localStorage.getItem(`producto${produtoid}`);
         
@@ -14,6 +17,7 @@ export default function ButtonComprar({ produtoid }) {
             });
         } else {
             localStorage.setItem(`producto${produtoid}`, produtoid);
+            setCantidad(prevCantidad => prevCantidad + 1);
             Swal.fire({
                 title: "Producto Agregado",
                 icon: "success",

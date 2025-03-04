@@ -7,10 +7,12 @@ const [categories, setCategories] = useState([]);
 
 useEffect(() => {
     const getCategories = async () => {
+
     const response = await fetch("https://dummyjson.com/products/categories");
     const data = await response.json();
     setCategories(data);
-    };
+    
+};
     getCategories();
 }, []);
 

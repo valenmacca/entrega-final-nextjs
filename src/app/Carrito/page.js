@@ -1,8 +1,9 @@
 "use client"
 
 import { useEffect, useState } from "react";
-import TitleCard from "../components/TitleCard/page";
+import TitleCard from "../components/TitleCard/title";
 import Swal from 'sweetalert2';
+import Image from 'next/image';
 
 export default function Carrito() {
 
@@ -119,10 +120,12 @@ const totaldelacompra = ()=>{
                                 className="bg-white shadow-lg rounded-lg p-4 hover:shadow-xl transition-shadow duration-300"
                                 key={index}
                             >
-                                <img
+                                <Image
                                     src={prod.images[0]}
                                     alt={prod.title}
-                                    className="w-full h-56 object-cover rounded-lg mb-4"
+                                    className=" object-cover rounded-lg mb-4"
+                                    width={100}
+                                    height={100}
                                 />
                                 <h2 className="text-2xl font-bold text-gray-800 mb-2">{prod.title}</h2>
                                 <p className="text-xl font-semibold text-green-600 mb-4">Price: ${prod.price}</p>

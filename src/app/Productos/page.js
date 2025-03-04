@@ -1,59 +1,62 @@
 "use client"
-import { useEffect, useState } from "react"
-import TitleCard from '../components/TitleCard/page'
-import ButtonInformation from "../components/ButtonInformation/page"
-import Categorias from "../components/categoriascomponent/page"
+import { useEffect, useState } from "react";
+import TitleCard from '../components/TitleCard/title';
+import ButtonInformation from "../components/ButtonInformation/ButtonInformation";
+import Categorias from "../components/categoriascomponent/categoriascomponent";
+import Image from 'next/image';
+import { db, collection, getDocs } from "../../../lib/firebase";
 
-export default function Productos(){
-    const [products, setproducts] = useState([])
-    const [loading, setloading] = useState(true)
-    
-    
-    useEffect(() => {
-        const giveproducts = async () =>{
-        let url = 'https://dummyjson.com/products'
-        try{
-            const respuesta = await fetch(url);
-            const data = await respuesta.json();
-            setproducts(data.products)
-            setloading(false)
+export default function Productos() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-        }catch(error){
-            console.log(error)
-        }
-    }
-    
-    giveproducts()
-    }, [])
-    
-    if(loading){
-        return(
+  useEffect(() => {
+    const getProducts = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "products"));
+        const productsArray = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        setProducts(productsArray);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching products from Firestore: ", error);
+        setError("Error al obtener los productos.");
+        setLoading(false);
+      }
+    };
 
-            <div>Cargando....</div>
-        )
-    }
+    getProducts();
+  }, []);
 
+  if (loading) {
+    return <div>Cargando....</div>;
+  }
 
-    return(
-            <>
-            <Categorias/>
-            <TitleCard>Productos</TitleCard>
-            <div className="grid grid-cols-3 gap-4 p-4">
-                {products.map((products)=>{
-                    return(
-                    <div key={products.id} className="flex flex-col items-center p-4 border rounded shadow-md">
-                        <h1>{products.title}</h1>
-                        <p>{products.price}</p>
-                        <img
-                                        src={products.images[0]}
-                                        alt={products.title}
-                                        className="w-[60] h-[60]"
-                        />
-                        <ButtonInformation idproducts={products.id}/>
-                    </div>
-                    )
-                })}
+  if (error) {
+    return <div>{error}</div>;
+  }
+
+  return (
+    <>
+      <Categorias />
+      <TitleCard>Productos</TitleCard>
+      <div className="grid grid-cols-3 gap-4 p-4">
+        {products.map((product) => {
+          return (
+            <div key={product.id} className="flex flex-col items-center p-4 border rounded shadow-md">
+              <h1>{product.title}</h1>
+              <p>{product.price}</p>
+              <Image
+                src={product.imageUrl || "/default-image.png"} // Asegúrate de que la propiedad imageUrl esté correcta
+                alt={product.title}
+                width={60}
+                height={60}
+              />
+              <ButtonInformation idproducts={product.id} />
             </div>
-            </>
-    )
+          );
+        })}
+      </div>
+    </>
+  );
 }

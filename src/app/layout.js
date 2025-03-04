@@ -13,9 +13,10 @@ export const metadata = {
   },
 };
 
-import Footer from "./components/Footer/page";
-import Header from "./components/Header/page";
+import Footer from "./components/Footer/Footer";
+import Header from "./components/Header/Header";
 import "./globals.css";
+import { CarritoProvider } from "./context/carritocontexto";
 
 export default function RootLayout({ children }) {
   return (
@@ -24,9 +25,11 @@ export default function RootLayout({ children }) {
         <link rel="icon" type="image/png" href="/tarjeta-de-debito.png" />
       </head>
       <body className="bg-background min-h-screen flex flex-col">
-        <Header />
-        <main className="grow p-4">{children}</main>
-        <Footer />
+        <CarritoProvider>
+          <Header />
+          <main className="grow p-4">{children}</main>
+          <Footer />
+        </CarritoProvider>
       </body>
     </html>
   );

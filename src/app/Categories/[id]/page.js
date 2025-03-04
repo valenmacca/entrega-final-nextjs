@@ -1,8 +1,9 @@
 "use client";
-import ButtonInformation from "@/app/components/ButtonInformation/page";
-import Categorias from "@/app/components/categoriascomponent/page"
-import TitleCard from "@/app/components/TitleCard/page"
+import ButtonInformation from "@/app/components/ButtonInformation/ButtonInformation";
+import Categorias from "@/app/components/categoriascomponent/categoriascomponent"
+import TitleCard from "@/app/components/TitleCard/title"
 import { useEffect, useState } from "react";
+import Image from 'next/image';
 
 export default function ProductPage({ params }) {
   const [categori, setcategori] = useState(null);
@@ -10,7 +11,7 @@ export default function ProductPage({ params }) {
 
   useEffect(() => {
     const givecategoriesid = async () => {
-      const { id } = await params; // Aquí no necesitas 'await' ya que 'params' no es una promesa.
+      const { id } = await params;
       setcategori(id);
     };
 
@@ -19,11 +20,11 @@ export default function ProductPage({ params }) {
 
   useEffect(() => {
     const giveproducts = async () => {
-      if (!categori) return; // Evita que se haga la solicitud si 'categori' es null.
+      if (!categori) return; 
       try {
         const response = await fetch(`https://dummyjson.com/products/category/${categori}`);
         const data = await response.json();
-        setProductos(data.products || []); // Asegúrate de acceder a los productos correctamente.
+        setProductos(data.products || []); 
       } catch (error) {
         console.log(error);
       }
@@ -43,7 +44,13 @@ export default function ProductPage({ params }) {
           <div key={product.id} className="flex flex-col items-center p-4 border rounded shadow-md">
             <h1>{product.title}</h1>
             <p>{product.price}</p>
-            <img src={product.images[0]} alt={product.title} className="w-[60] h-[60]" />
+                                            <Image
+                                src={product.images[0]}
+                                alt={product.title}
+                                width={60}
+                                height={60}
+                                className="w-[60px] h-[60px]"
+                                />
             <ButtonInformation idproducts={product.id}/>
           </div>
         ))

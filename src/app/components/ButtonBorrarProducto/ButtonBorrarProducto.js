@@ -1,9 +1,16 @@
 "use client"
+import { CarritoContext } from "../../context/carritocontexto";
+import { useContext } from 'react';
+
+
 export default function ButtonBorrarProducto({producidsssss}){
+    
+    const { cantidad, setCantidad } = useContext(CarritoContext);
 
     const borrarprodcto = ()=>{
         console.log(producidsssss)
         localStorage.removeItem(`producto${producidsssss}`)
+        setCantidad(prevCantidad => prevCantidad - 1);
     }
 
     return(
