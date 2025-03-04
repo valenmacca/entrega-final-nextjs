@@ -16,6 +16,7 @@ export default function Header() {
       <h1>ecommerce-valentinomaccaroni</h1>
       <nav className="flex gap-4">
         <Link href="/">home</Link>
+        <Link href="/admin">admin</Link>
         <Link href="/Productos">productos</Link>
         <Link href="/Carrito" className="flex items-center gap-1">
           <ShoppingCart className="w-5 h-5 text-white" />
